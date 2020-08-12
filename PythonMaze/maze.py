@@ -72,10 +72,9 @@ class Maze:
 		self.cells = [[0] * self.columns for i in range(self.rows)]
 		for i in range(0,self.columns):
 			for j in range(0,self.rows):
-				self.cells[i][j] = Cell(i * cell_size,j * cell_size)
+				self.cells[i][j] = Cell(i, j)
 
 	def is_valid(self, cell):
-		print(cell.x," ",cell.y)
 		if cell.x < 0 or cell.x >= self.columns:
 			return False
 		if cell.y < 0 or cell.y >= self.rows:
@@ -94,15 +93,23 @@ class Maze:
 		if not self.is_valid(Cell(cell.x + move[0], cell.y + move[1])):
 			return False
 		if move == self.moves[0]:
+			print("Removing top from x: ",cell.x," y: ",cell.y)
+			print("Removing bottom from x: ", cell.x + move[0], " y: ", cell.y + move[1])
 			self.cells[cell.x][cell.y].remove_wall(0) # Top
 			self.cells[cell.x + move[0]][cell.y + move[1]].remove_wall(2) # Bottom
 		elif move == self.moves[1]:
+			print("Removing right from x: ", cell.x, " y: ", cell.y)
+			print("Removing left from x: ", cell.x + move[0], " y: ", cell.y + move[1])
 			self.cells[cell.x][cell.y].remove_wall(1) # Right
 			self.cells[cell.x + move[0]][cell.y + move[1]].remove_wall(3) # Left
 		elif move == self.moves[2]:
+			print("Removing bottom from x: ", cell.x, " y: ", cell.y)
+			print("Removing top from x: ", cell.x + move[0], " y: ", cell.y + move[1])
 			self.cells[cell.x][cell.y].remove_wall(2) # Bottom
 			self.cells[cell.x + move[0]][cell.y + move[1]].remove_wall(0) # Top
 		else:
+			print("Removing left from x: ", cell.x, " y: ", cell.y)
+			print("Removing right from x: ", cell.x + move[0], " y: ", cell.y + move[1])
 			self.cells[cell.x][cell.y].remove_wall(3) # Left
 			self.cells[cell.x + move[0]][cell.y + move[1]].remove_wall(1) # Right
 		self.cells[cell.x + move[0]][cell.y + move[1]].visited = True
@@ -111,38 +118,43 @@ class Maze:
 	def get_random_neighbour(self, cell):
 		possible_moves = []
 		for i in range(0, 4):
-
-			print(self.is_valid(Cell(cell.x + self.moves[i][0], cell.y + self.moves[i][1])))
 			if self.is_valid(Cell(cell.x + self.moves[i][0], cell.y + self.moves[i][1])):
 				possible_moves.append(i)
-		r = random.randint(0, len(possible_moves))
 		if len(possible_moves):
-			return possible_moves[r]
+			r = random.randint(1, len(possible_moves))
+			return possible_moves[r - 1]
 		return -1
 
 	def generate(self):
-		print(self.get_random_neighbour(self.cells[1][1]))
-		"""
+		#"""
 		current_cell = self.cells[0][0]
 		stack = [current_cell]
-		
 		while len(stack):
 			current_cell = stack[-1]
 			stack.pop()
+			print(self.has_neighbours(current_cell))
 			if self.has_neighbours(current_cell):
 				stack.append(current_cell)
+
+			print("\nStack: ")
+			for x in stack:
+				print("x: ", x.x, " y: ", x.y, " ")
+			print("\n")
+
 			index = self.get_random_neighbour(current_cell)
-			print(len(stack))
-			print(index)
+			print("Current cell x: ", current_cell.x, " y: ", current_cell.y)
+			print("Chosen neighbor : ", index)
 			if index != -1:
+				print(self.moves[index])
 				self.visit_cell(current_cell, self.moves[index])
 				stack.append(self.cells[current_cell.x + self.moves[index][0]][current_cell.y + self.moves[index][1]])
 			for i in range(self.columns):
 				for j in range(self.rows):
-					print(self.cells[i][j], end=' || ')
-				print(" ")
+					print(self.cells[j][i], end=' || ')
+				print("\n")
 				print("----------------------------------------------------")
-		"""
+
+		#""""
 		"""
 		for i in self.cells:
 			for j in i:
@@ -160,7 +172,7 @@ class Maze:
 
 
 if __name__ == "__main__":
-	maze = Maze(int(100), int(100), int(20))
+	maze = Maze(int(60), int(60), int(20))
 	maze.generate()
 
 """
