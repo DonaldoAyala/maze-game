@@ -5,8 +5,8 @@ import math
 
 class Player:
 	def __init__(self, columns, rows, size):
-		self.pos_x = random.randint(0 ,columns - 1)
-		self.pos_y = random.randint(0 ,rows - 1)
+		self.pos_x = 0
+		self.pos_y = 0
 		self.speed = 10
 		self.size = size
 
@@ -22,29 +22,55 @@ class Player:
 	def go_left(self):
 		self.pos_x -= self.speed
 
-	def move(self, current_cell):
+	def move(self, maze):
+		current_cell = maze.cells[math.floor(self.pos_x / maze.cell_size)][math.floor(self.pos_y / maze.cell_size)]
+		row,col = current_cell.row, current_cell.col
+		size = current_cell.size
+		bound = maze.rows
+		up_right, right_bot, bot_left, bot_right, left_bot, right_up = False,False,False,False,False,False
+		if row > 0:
+			up_right = maze.cells[col][row - 1].walls[1]
+		if col < bound - 1:
+			right_bot = maze.cells[col + 1][row].walls[2]
+			right_up = maze.cells[col + 1][row].walls[0]
+		if row < bound - 1:
+			bot_left = maze.cells[col][row + 1].walls[3]
+			bot_right = maze.cells[col][row + 1].walls[1]
+		if col > 0:
+			left_bot = maze.cells[col - 1][row].walls[2]
 		key = pygame.key.get_pressed()
-		if key[pygame.K_LEFT]:
-			if current_cell.walls[3] and self.pos_x <= current_cell.col * current_cell.size:
-				self.pos_x = current_cell.col * current_cell.size
-			else:
-				self.go_left()
-		if key[pygame.K_RIGHT]:
-			if current_cell.walls[1] and self.pos_x + self.size >= current_cell.col * current_cell.size + current_cell.size:
-				self.pos_x = current_cell.col * current_cell.size + current_cell.size - self.size
-			else:
-				self.go_right()
-		if key[pygame.K_DOWN]:
-			if current_cell.walls[2] and self.pos_y + self.size >= current_cell.row * current_cell.size + current_cell.size:
-				self.pos_y = current_cell.row * current_cell.size + current_cell.size - self.size
-			else:
-				self.go_down()
 		if key[pygame.K_UP]:
-			if current_cell.walls[0] and self.pos_y <= current_cell.row * current_cell.size:
-
-				self.pos_y = current_cell.row * current_cell.size
+			if current_cell.walls[0] or ((up_right or right_up) and self.pos_x + self.size > (col + 1)*size):
+				if self.pos_y <= row * size:
+					self.pos_y = row * size
+				else:
+					self.go_up()
 			else:
 				self.go_up()
+		if key[pygame.K_RIGHT]:
+			if current_cell.walls[1] or ((right_bot or bot_right) and self.pos_y + self.size > (row + 1)*size):
+				if self.pos_x + self.size >= (col + 1) * size:
+					self.pos_x = (col + 1) * size - self.size
+				else:
+					self.go_right()
+			else:
+				self.go_right()
+		if key[pygame.K_LEFT]:
+			if current_cell.walls[3] or ((left_bot or bot_left) and self.pos_y + self.size > (row + 1) * size):
+				if self.pos_x <= col * size:
+					self.pos_x = col * size
+				else:
+					self.go_left()
+			else:
+				self.go_left()
+		if key[pygame.K_DOWN]:
+			if current_cell.walls[2] or ((right_bot or bot_right) and self.pos_x + self.size > (col + 1) * size) :
+				if self.pos_y + self.size >= (row + 1) * size:
+					self.pos_y = (row + 1) * size - self.size
+				else:
+					self.go_down()
+			else:
+				self.go_down()
 
 
 class Screen:
@@ -174,7 +200,7 @@ class Maze:
 	def print_maze(self):
 		for i in range(self.rows):
 			for j in range(self.columns):
-				print(self.cells[i][j], end=' || ')
+				print(self.cells[j][i], end=' || ')
 			print("\n")
 			print("----------------------------------------------")
 
@@ -224,7 +250,7 @@ class Game:
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					self.running = False
-			player.move(maze.cells[math.floor(player.pos_x / maze.cell_size)][math.floor(player.pos_y / maze.cell_size)])
+			player.move(maze    )
 			self.screen.refresh(maze, player)
 
 
