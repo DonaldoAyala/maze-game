@@ -31,7 +31,6 @@ class Game:
 	def start(self):
 		maze = Maze(self.width, self.height, self.cell_size)
 		maze.generate()
-		maze.print_maze()
 		player = Player(maze.columns, maze.rows, 50)
 		pygame.init()
 		while self.running:
