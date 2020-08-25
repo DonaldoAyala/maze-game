@@ -1,3 +1,4 @@
 *.pyc
 .idea
 PythonMaze/.idea
+PythonMaze/__pycache__
