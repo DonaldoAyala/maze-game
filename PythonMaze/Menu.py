@@ -5,15 +5,21 @@ import Color as color
 
 class Menu:
 	def __init__(self):
-		pass
-
+		self.buttons = []
+		# 'Easy difficulty button'
+		self.buttons.append(Button((50,300),(100,30),(color.gray),"Easy"))
+		# 'Medium difficulty button'
+		self.buttons.append(Button((200,300),(100,30),(color.gray),"Medium"))
+		# 'Hard difficulty button'
+		self.buttons.append(Button((350,300),(100,30),(color.gray),"Hard"))
 
 class Button:
 
-	def __init__(self, position, size, color):
+	def __init__(self, position, size, color, text):
 		self.position = position
 		self.size = size
 		self.color = color
+		self.text = text
 
 	def change_color(self, color):
 		self.color = color

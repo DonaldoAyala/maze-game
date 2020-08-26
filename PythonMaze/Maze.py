@@ -7,7 +7,6 @@ class Menu:
 	def __init__(self):
 		pass
 
-
 class Button:
 
 	def __init__(self, position, size, color):
