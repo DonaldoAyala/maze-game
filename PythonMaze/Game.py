@@ -2,18 +2,15 @@ import pygame
 from Player import *
 from Screen import *
 from Menu import *
+from CoinGenerator import *
 import Color as color
 
 
-
 class Game:
-	def __init__(self, width, height, cell_size):
-		self.screen = Screen(width + 1, height + 1, color.black, "Maze Game", )
-		self.width = width
-		self.height = height
+	def __init__(self):
+		self.screen = Screen(500 + 1, 500 + 1, color.black, "Maze Game")
 		self.fps = 60
 		self.running = True
-		self.cell_size = cell_size
 		self.clock = pygame.time.Clock()
 		self.difficulty = 0
 		pygame.init()
@@ -35,24 +32,24 @@ class Game:
 				self.difficulty = difficulty
 			self.pressed_exit()
 
-	def start(self):
-		width, height, cell_size = 0,0,0
-		player_size = 0
+	def set_difficulty(self):
 		if self.difficulty == 1:
-			width, height, cell_size = 500, 500, 100
-			player_size = 50
+			return (500, 500, 100, 50)
 		elif self.difficulty == 2:
-			width, height, cell_size = 500, 500, 50
-			player_size = 30
+			return (500, 500, 50, 30)
 		else:
-			width, height, cell_size = 500, 500, 35
-			player_size = 20
+			return  (500, 500, 35, 20)
+
+	def start(self):
+		width, height, cell_size, player_size = self.set_difficulty()
+		self.screen = Screen(width + 1, height + 1, color.black, "Maze Game")
 		maze = Maze(width, height, cell_size)
 		maze.generate()
-		player = Player(maze.columns, maze.rows, player_size)
-		pygame.init()
+		coin_generator = CoinGenerator((maze.columns, maze.rows), cell_size)
+		coin = coin_generator.generate_coin()
+		player = Player(player_size)
 		while self.running:
 			self.clock.tick(self.fps)
 			self.pressed_exit()
 			player.move(maze)
-			self.screen.refresh(maze, player)
+			self.screen.refresh(maze, player, coin)

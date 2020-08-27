@@ -3,28 +3,6 @@ import random
 import Color as color
 
 
-class Menu:
-	def __init__(self):
-		pass
-
-class Button:
-
-	def __init__(self, position, size, color):
-		self.position = position
-		self.size = size
-		self.color = color
-
-	def change_color(self, color):
-		self.color = color
-
-	def clicked_over(self, clicked_pos):
-		if self.position[0] < clicked_pos[0] < self.position[0] + self.size[0] \
-				and self.position[1] < clicked_pos[1] < self.position[1] + self.size[1]:
-			return True
-		else:
-			return False
-
-
 class Cell:
 	def __init__(self, col, row, size):
 		# Walls: 0:Up , 1:Right , 2:Bottom , 3:Left
@@ -48,21 +26,6 @@ class Cell:
 		if self.walls[3]:
 			string += 'l '
 		return string
-
-	def draw_walls(self, win, size):
-		self.size = size
-		if self.walls[0]:
-			pygame.draw.line(win, color.white, (self.col * size, self.row * size),
-							 (self.col * size + size, self.row * size))
-		if self.walls[1]:
-			pygame.draw.line(win, color.white, (self.col * size + size, self.row * size),
-							 (self.col * size + size, self.row * size + size))
-		if self.walls[2]:
-			pygame.draw.line(win, color.white, (self.col * size + size, self.row * size + size),
-							 (self.col * size, self.row * size + size))
-		if self.walls[3]:
-			pygame.draw.line(win, color.white, (self.col * size, self.row * size + size),
-							 (self.col * size, self.row * size))
 
 
 class Maze:
