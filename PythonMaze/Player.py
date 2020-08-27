@@ -3,7 +3,7 @@ import math
 
 
 class Player:
-	def __init__(self, columns, rows, size):
+	def __init__(self, size):
 		self.pos_x = 0
 		self.pos_y = 0
 		self.speed = 5
