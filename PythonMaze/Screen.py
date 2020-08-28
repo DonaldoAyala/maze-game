@@ -15,22 +15,24 @@ class Screen:
 		self.window = pygame.display.set_mode((self.width, self.height))
 		pygame.display.set_caption(self.caption)
 
+	def print_text(self, text, position, font_size, color):
+		my_font = pygame.font.SysFont('franklingothicmedium', font_size)
+		local_text = my_font.render(text, True, color)
+		self.window.blit(local_text, position + (len(text) * font_size + 5, font_size + 5))
+
 	def center_window(self):
 		os.environ['SDL_VIDEO_CENTERED'] = '0'
 
 	def draw_coin(self, coin):
-		pygame.draw.circle(self.window, color.yellow, coin.center, coin.radius)
+		pygame.draw.circle(self.window, color.yellow, coin.center, coin.radius )
 
 
 	def draw_menu(self, menu):
+		for text in menu.texts:
+			self.print_text(text.text, text.position, text.font_size, text.color)
 		for button in menu.buttons:
-			# Draw button rectangle
 			pygame.draw.rect(self.window, button.color, button.position + button.size)
-			# Create a font
-			myfont = pygame.font.SysFont('franklingothicmedium', 20)
-			# Get a text object
-			text = myfont.render(button.text, True, color.black)
-			self.window.blit(text, button.position + button.size)
+			self.print_text(button.text, button.position, 20, button.text_color)
 
 		mouse_keys = pygame.mouse.get_pressed()
 		if mouse_keys[0]:

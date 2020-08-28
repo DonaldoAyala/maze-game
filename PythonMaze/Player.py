@@ -1,3 +1,4 @@
+from CoinGenerator import Coin
 import pygame
 import math
 
@@ -8,6 +9,10 @@ class Player:
 		self.pos_y = 0
 		self.speed = 5
 		self.size = size
+
+	def set_position(self, position):
+		pos_x = position[0]
+		pos_y = position[1]
 
 	def go_up(self):
 		self.pos_y -= self.speed
@@ -20,6 +25,12 @@ class Player:
 
 	def go_left(self):
 		self.pos_x -= self.speed
+
+	def picked_coin(self, coin):
+		player_center = (self.pos_x + (self.size // 2), self.pos_y + (self.size // 2))
+		distance = ((player_center[0] - coin.center[0]) ** 2 + (player_center[1] - coin.center[1]) ** 2)**(1/2)
+		return distance <= self.size // 2 + coin.radius
+
 
 	def move(self, maze):
 		current_cell = maze.cells[math.floor(self.pos_x / maze.cell_size)][math.floor(self.pos_y / maze.cell_size)]
@@ -70,3 +81,13 @@ class Player:
 					self.go_down()
 			else:
 				self.go_down()
+
+
+
+player = Player(10)
+player.set_position((5, 5))
+coin = Coin((25, 5), 10)
+
+print(player.picked_coin(coin))
+
+
