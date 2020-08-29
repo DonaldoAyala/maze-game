@@ -1,5 +1,6 @@
 import pygame
 import os
+import time
 from Maze import *
 import Color as color
 
@@ -44,8 +45,8 @@ class Screen:
 						return 2
 					elif button.text == "Hard":
 						return 3
-					else:
-						return 0
+					elif button.text == "Exit":
+						return -1
 		pygame.display.update()
 		return 0
 
@@ -77,13 +78,27 @@ class Screen:
 									  maze.cells[i][j].row * maze.cell_size))
 
 	def draw_player(self, player):
-		pygame.draw.rect(self.window, color.gray, (player.pos_x, player.pos_y, player.size, player.size))
+		pygame.draw.rect(self.window, player.color, (player.pos_x, player.pos_y, player.size, player.size))
 
-	def refresh(self, maze, player, coin):
+	def draw_scoreboard(self, score, highest_score):
+		self.print_text("Score: " + str(score) + "   " + "Record: " + str(highest_score), (10, 505), 30, color.gray)
+
+	def draw_time(self, time):
+		self.print_text(str(time), (400, 505), 30, color.gray)
+
+	def draw_game_over(self):
+		self.print_text("Game Over!", (100, 200), 60, color.red)
+		pygame.display.update()
+		time.sleep(2)
+
+
+	def refresh(self, maze, player, coin, score, time_left):
 		self.window.fill(color.black)
 		self.draw_maze(maze)
 		self.draw_player(player)
 		self.draw_coin(coin)
+		self.draw_scoreboard(score[0], score[1])
+		self.draw_time(time_left)
 		pygame.display.update()
 
 

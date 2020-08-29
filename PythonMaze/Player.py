@@ -4,11 +4,12 @@ import math
 
 
 class Player:
-	def __init__(self, size):
-		self.pos_x = 0
-		self.pos_y = 0
-		self.speed = 5
+	def __init__(self, position, size, color, speed):
+		self.pos_x = position[0]
+		self.pos_y = position[0]
+		self.speed = speed
 		self.size = size
+		self.color = color
 
 	def set_position(self, position):
 		pos_x = position[0]
@@ -84,10 +85,6 @@ class Player:
 
 
 
-player = Player(10)
-player.set_position((5, 5))
-coin = Coin((25, 5), 10)
 
-print(player.picked_coin(coin))
 
 
