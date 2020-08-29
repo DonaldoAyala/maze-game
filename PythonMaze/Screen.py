@@ -84,7 +84,7 @@ class Screen:
 		self.print_text("Score: " + str(score) + "   " + "Record: " + str(highest_score), (10, 505), 30, color.gray)
 
 	def draw_time(self, time):
-		self.print_text(str(time), (400, 505), 30, color.gray)
+		self.print_text("Time: " + str(time), (350, 505), 30, color.gray)
 
 	def draw_game_over(self):
 		self.print_text("Game Over!", (100, 200), 60, color.red)
