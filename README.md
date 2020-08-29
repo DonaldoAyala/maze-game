@@ -1,7 +1,9 @@
 # Lucky Maze
 
-![menu](https://github.com/DonaldoAyala/Maze_Game/blob/master/.images/menu.png)
-![in_game](https://github.com/DonaldoAyala/Maze_Game/blob/master/.images/in_game.png)
+> ### Menu preview
+> ![menu](https://github.com/DonaldoAyala/Maze_Game/blob/master/.images/menu.png)
+> ### In-Game preview
+> ![in_game](https://github.com/DonaldoAyala/Maze_Game/blob/master/.images/in_game.png)
 
 
 ## Description
