@@ -106,12 +106,14 @@ class Screen:
         #self.draw_coin(coin)
         #self.draw_scoreboard(score[0], score[1])
         #self.draw_time(time_left)
-        wall = Wall(Point(200, 300), Point(200,200))
+        #self.draw_rays(player, maze)
+        walls = [Wall(Point(200, 300), Point(200,200)), Wall(Point(300, 300), Point(300,200)), Wall(Point(190, 240), Point(190,260))]
         ray = Ray(Point(100, 250), Point(50,0))
         ray.set_direction(Point.from_tuple(pygame.mouse.get_pos()))
-        self.draw_wall(wall)
+        for wall in walls:
+            self.draw_wall(wall)
         self.draw_ray(ray)
-        intersection_point = ray.cast(wall)
+        intersection_point = ray.cast(walls)
         if (intersection_point is not None):
             intersection_point.draw(self.window, color.green, pygame)
         pygame.display.update()
