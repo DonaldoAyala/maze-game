@@ -17,10 +17,11 @@ class Player:
         ray_length = 1
         i = 0
         vision_points = []
+        mid = Point(self.size / 2, self.size / 2)
         while i < 2 * math.pi:
             x = ray_length * math.cos(i)
             y = ray_length * math.sin(i)
-            ray = Ray(self.position, Point(x, y))
+            ray = Ray(self.position + mid, Point(x, y))
             vision_point = ray.cast(walls)
             if vision_point is not None:
                 vision_points.append(vision_point)
