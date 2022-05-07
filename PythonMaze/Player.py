@@ -1,31 +1,47 @@
 from CoinGenerator import Coin
 import pygame
 import math
+from Ray import *
 
 
 class Player:
-    def __init__(self, position, size, color, speed):
-        self.pos_x = position[0]
-        self.pos_y = position[0]
+    def __init__(self, position, size, color, speed, rays_number):
+        self.pos_x = position.x
+        self.pos_y = position.y
+        self.position = position
         self.speed = speed
         self.size = size
         self.color = color
+        self.rays_number = rays_number
+    
+    def get_vision_rays(self, walls):
+        angle_step = (2 * math.pi) / self.rays_number
+        ray_length = 1
+        i = 0
+        vision_points = []
+        while i < 2 * math.pi:
+            x = ray_length * math.cos(i)
+            y = ray_length * math.sin(i)
+            ray = Ray(self.position, Point(x, y))
+            vision_points.append(ray.cast(walls))
+            i += angle_step
+        
+        return vision_points
 
     def set_position(self, position):
-        pos_x = position[0]
-        pos_y = position[1]
+        self.position = position
 
     def go_up(self):
-        self.pos_y -= self.speed
+        self.position.y -= self.speed
 
     def go_right(self):
-        self.pos_x += self.speed
+        self.position.x += self.speed
 
     def go_down(self):
-        self.pos_y += self.speed
+        self.position.y += self.speed
 
     def go_left(self):
-        self.pos_x -= self.speed
+        self.position.x -= self.speed
 
     def picked_coin(self, coin):
         player_center = (self.pos_x + (self.size // 2), self.pos_y + (self.size // 2))
