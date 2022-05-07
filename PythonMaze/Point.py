@@ -8,6 +8,9 @@ class Point:
 
     def from_tuple(tuple):
         return Point(tuple[0], tuple[1])
+    
+    def distance(point1, point2):
+        return ((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2) **(1/2)
 
     def get_tuple(self):
         return (self.x, self.y)
