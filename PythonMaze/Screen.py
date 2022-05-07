@@ -80,7 +80,7 @@ class Screen:
                                       maze.cells[i][j].row * maze.cell_size))
 
     def draw_player(self, player):
-        pygame.draw.rect(self.window, player.color, (player.pos_x, player.pos_y, player.size, player.size))
+        pygame.draw.rect(self.window, player.color, (player.position.x, player.position.y, player.size, player.size))
 
     def draw_scoreboard(self, score, highest_score):
         self.print_text("Score: " + str(score) + "   " + "Record: " + str(highest_score), (10, 505), 30, color.gray)
@@ -99,21 +99,23 @@ class Screen:
     def draw_ray(self, ray):
         ray.draw(self.window, color.white, pygame)
 
+    def draw_rays(self, player, maze):
+        vision_points = player.get_vision_rays(maze.walls_lines)
+        for vision_point in vision_points:
+            vision_point.draw(self.window, color.green, pygame)
+
     def refresh(self, maze, player, coin, score, time_left):
         self.window.fill(color.black)
         #self.draw_maze(maze)
-        #self.draw_player(player)
+        self.draw_player(player)
         #self.draw_coin(coin)
         #self.draw_scoreboard(score[0], score[1])
         #self.draw_time(time_left)
-        #self.draw_rays(player, maze)
-        walls = [Wall(Point(200, 300), Point(200,200)), Wall(Point(300, 300), Point(300,200)), Wall(Point(190, 240), Point(190,260))]
+        self.draw_rays(player, maze)
         ray = Ray(Point(100, 250), Point(50,0))
         ray.set_direction(Point.from_tuple(pygame.mouse.get_pos()))
-        for wall in walls:
-            self.draw_wall(wall)
         self.draw_ray(ray)
-        intersection_point = ray.cast(walls)
+        intersection_point = ray.cast(maze.walls_lines)
         if (intersection_point is not None):
             intersection_point.draw(self.window, color.green, pygame)
         pygame.display.update()

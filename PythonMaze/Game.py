@@ -28,7 +28,7 @@ class Game:
         self.running = False
 
     def choose_difficulty(self):
-        self.difficulty = 1
+        self.difficulty = 1 # Remove
         return
         while self.difficulty == 0 and self.running:
             self.clock.tick(self.fps)
@@ -67,7 +67,7 @@ class Game:
         maze.generate()
         coin_generator = CoinGenerator((maze.columns, maze.rows), cell_size)
         coin = coin_generator.generate_coin()
-        player = Player((0, 0), player_size, color.green, 5)
+        player = Player(Point(0, 0), player_size, color.green, 5, 50)
         score = 0
         highest_score = self.scoreboard.get_highest_score()
         timer = Timer()

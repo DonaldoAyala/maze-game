@@ -12,7 +12,6 @@ class Cell:
         self.row = row
         self.visited = False
         self.size = size
-        self.walls_lines = []
 
     def remove_wall(self, wall):
         self.walls[wall] = False
@@ -60,6 +59,7 @@ class Maze:
         for i in range(0, self.columns):
             for j in range(0, self.rows):
                 self.cells[i][j] = Cell(i, j, cell_size)
+        self.walls_lines = []
 
     def is_valid(self, cell):
         if cell.col < 0 or cell.col >= self.columns:

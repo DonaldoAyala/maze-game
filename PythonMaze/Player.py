@@ -6,8 +6,6 @@ from Ray import *
 
 class Player:
     def __init__(self, position, size, color, speed, rays_number):
-        self.pos_x = position.x
-        self.pos_y = position.y
         self.position = position
         self.speed = speed
         self.size = size
@@ -23,7 +21,9 @@ class Player:
             x = ray_length * math.cos(i)
             y = ray_length * math.sin(i)
             ray = Ray(self.position, Point(x, y))
-            vision_points.append(ray.cast(walls))
+            vision_point = ray.cast(walls)
+            if vision_point is not None:
+                vision_points.append(vision_point)
             i += angle_step
         
         return vision_points
@@ -44,13 +44,12 @@ class Player:
         self.position.x -= self.speed
 
     def picked_coin(self, coin):
-        player_center = (self.pos_x + (self.size // 2), self.pos_y + (self.size // 2))
+        player_center = (self.position.x + (self.size // 2), self.position.y + (self.size // 2))
         distance = ((player_center[0] - coin.center[0]) ** 2 + (player_center[1] - coin.center[1]) ** 2)**(1/2)
         return distance <= self.size // 2 + coin.radius
 
-
     def move(self, maze):
-        current_cell = maze.cells[math.floor(self.pos_x / maze.cell_size)][math.floor(self.pos_y / maze.cell_size)]
+        current_cell = maze.cells[math.floor(self.position.x / maze.cell_size)][math.floor(self.position.y / maze.cell_size)]
         row, col = current_cell.row, current_cell.col
         size = current_cell.size
         bound = maze.rows
@@ -67,33 +66,33 @@ class Player:
             left_bot = maze.cells[col - 1][row].walls[2]
         key = pygame.key.get_pressed()
         if key[pygame.K_UP]:
-            if current_cell.walls[0] or ((up_right or right_up) and self.pos_x + self.size > (col + 1) * size):
-                if self.pos_y <= row * size:
-                    self.pos_y = row * size
+            if current_cell.walls[0] or ((up_right or right_up) and self.position.x + self.size > (col + 1) * size):
+                if self.position.y <= row * size:
+                    self.position.y = row * size
                 else:
                     self.go_up()
             else:
                 self.go_up()
         if key[pygame.K_RIGHT]:
-            if current_cell.walls[1] or ((right_bot or bot_right) and self.pos_y + self.size > (row + 1) * size):
-                if self.pos_x + self.size >= (col + 1) * size:
-                    self.pos_x = (col + 1) * size - self.size
+            if current_cell.walls[1] or ((right_bot or bot_right) and self.position.y + self.size > (row + 1) * size):
+                if self.position.x + self.size >= (col + 1) * size:
+                    self.position.x = (col + 1) * size - self.size
                 else:
                     self.go_right()
             else:
                 self.go_right()
         if key[pygame.K_LEFT]:
-            if current_cell.walls[3] or ((left_bot or bot_left) and self.pos_y + self.size > (row + 1) * size):
-                if self.pos_x <= col * size:
-                    self.pos_x = col * size
+            if current_cell.walls[3] or ((left_bot or bot_left) and self.position.y + self.size > (row + 1) * size):
+                if self.position.x <= col * size:
+                    self.position.x = col * size
                 else:
                     self.go_left()
             else:
                 self.go_left()
         if key[pygame.K_DOWN]:
-            if current_cell.walls[2] or ((right_bot or bot_right) and self.pos_x + self.size > (col + 1) * size):
-                if self.pos_y + self.size >= (row + 1) * size:
-                    self.pos_y = (row + 1) * size - self.size
+            if current_cell.walls[2] or ((right_bot or bot_right) and self.position.x + self.size > (col + 1) * size):
+                if self.position.y + self.size >= (row + 1) * size:
+                    self.position.y = (row + 1) * size - self.size
                 else:
                     self.go_down()
             else:
