@@ -1,7 +1,8 @@
 import pygame
 import random
 import Color as color
-
+from Wall import *
+from Point import *
 
 class Cell:
     def __init__(self, col, row, size):
@@ -11,6 +12,7 @@ class Cell:
         self.row = row
         self.visited = False
         self.size = size
+        self.walls_lines = []
 
     def remove_wall(self, wall):
         self.walls[wall] = False
@@ -26,7 +28,26 @@ class Cell:
         if self.walls[3]:
             string += 'l '
         return string
-
+    
+    def get_walls_lines(self):
+        walls_lines = []
+        if self.walls[0]: # Upper Wall Line
+            start = Point(self.col * self.size, self.row * self.size)
+            end = Point((self.col + 1) * self.size, self.row * self.size)
+            walls_lines.append(Wall(start, end))
+        if self.walls[1]: # Right Wall Line
+            start = Point((self.col + 1) * self.size, self.row * self.size)
+            end = Point((self.col + 1) * self.size, (self.row + 1) * self.size)
+            walls_lines.append(Wall(start, end))
+        if self.walls[2]: # Bottom Wall Line
+            start = Point(self.col * self.size, (self.row + 1) * self.size)
+            end = Point((self.col + 1) * self.size, (self.row + 1) * self.size)
+            walls_lines.append(Wall(start, end))
+        if self.walls[3]: # Left Wall Line
+            start = Point(self.col * self.size, self.row * self.size)
+            end = Point(self.col * self.size, (self.row + 1) * self.size)
+            walls_lines.append(Wall(start, end))
+        return walls_lines
 
 class Maze:
     moves = [[0, -1], [1, 0], [0, 1], [-1, 0]]
@@ -103,3 +124,7 @@ class Maze:
                 self.visit_cell(current_cell, self.moves[index])
                 stack.append(
                     self.cells[current_cell.col + self.moves[index][0]][current_cell.row + self.moves[index][1]])
+        
+        for row in self.cells:
+            for cell in row:
+                self.walls_lines += cell.get_walls_lines()
