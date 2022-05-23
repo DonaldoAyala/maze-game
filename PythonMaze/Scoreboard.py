@@ -5,17 +5,17 @@ class Scoreboard:
 
     def __init__(self):
         self.local_score = 0
-        self.highest_score = self.get_highest_score()
+        self.best_score = self.get_best_score()
 
-    def get_highest_score(self):
-        if exists("./files/highest_score.txt") and isfile("./files/highest_score.txt"):
-            with open("./files/highest_score.txt", "r") as file:
+    def get_best_score(self):
+        if exists("./files/best_score.txt") and isfile("./files/best_score.txt"):
+            with open("./files/best_score.txt", "r") as file:
                 return int(file.read())
         else:
-            with open("./files/highest_score.txt", "w") as file:
-                file.write("0")
+            with open("./files/best_score.txt", "w") as file:
+                file.write("-1")
             return 0
 
-    def set_highest_score(self, new_score):
-        with open("./files/highest_score.txt", "w") as file:
+    def set_best_score(self, new_score):
+        with open("./files/best_score.txt", "w") as file:
             file.write(str(new_score))

@@ -3,26 +3,19 @@ from Scoreboard import *
 
 
 class Menu:
-    def __init__(self, highest_score):
+    def __init__(self, best_score):
         self.texts = []
         self.texts.append(ScreenText("Lucky Maze", (125, 40), color.green, 50))
-        self.texts.append(ScreenText("Highest Score", (165, 100), color.green, 30))
-        self.texts.append(ScreenText(str(highest_score), (235, 140), color.yellow, 30))
-        self.texts.append(ScreenText("Points x2", (50, 250), color.green, 25))
-        self.texts.append(ScreenText("Points x5", (200, 250), color.green, 25))
-        self.texts.append(ScreenText("Points x12", (350, 250), color.green, 25))
+        self.texts.append(ScreenText("Fastest Game", (165, 100), color.green, 30))
+        self.texts.append(ScreenText(str((best_score if best_score != -1 else '-')), (235, 140), color.yellow, 30))
         self.buttons = []
-        # 'Easy difficulty button'
-        self.buttons.append(Button((50, 210), (100, 30), color.gray, "Easy", color.black))
         # 'Medium difficulty button'
-        self.buttons.append(Button((200, 210), (100, 30), color.gray, "Medium", color.black))
-        # 'Hard difficulty button'
-        self.buttons.append(Button((350, 210), (100, 30), color.gray, "Hard", color.black))
+        self.buttons.append(Button((200, 210), (100, 30), color.gray, "Play", color.black))
         # Exit Button
         self.buttons.append(Button((10, 10), (50, 30), color.red, "Exit", color.white))
 
-    def set_highest_score(self, highest_score):
-        self.texts[2] = ScreenText(str(highest_score), (235, 140), color.yellow, 30)
+    def set_best_score(self, best_score):
+        self.texts[2] = ScreenText(str(best_score), (235, 140), color.yellow, 30)
 
 
 class ScreenText:

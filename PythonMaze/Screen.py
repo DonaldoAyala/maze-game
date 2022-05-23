@@ -37,19 +37,19 @@ class Screen:
             pygame.draw.rect(self.window, button.color, button.position + button.size)
             self.print_text(button.text, button.position, 20, button.text_color)
 
+        pygame.display.update()
+
         mouse_keys = pygame.mouse.get_pressed()
         if mouse_keys[0]:
             for button in menu.buttons:
                 if button.clicked_over(pygame.mouse.get_pos()):
-                    if button.text == "Easy":
+                    if button.text == "Play":
                         return 1
-                    elif button.text == "Medium":
-                        return 2
-                    elif button.text == "Hard":
-                        return 3
                     elif button.text == "Exit":
                         return -1
-        pygame.display.update()
+                    else:
+                        return 0
+        
         return 0
 
     def draw_maze(self, maze):
@@ -78,6 +78,11 @@ class Screen:
                                       maze.cells[i][j].row * maze.cell_size + maze.cell_size),
                                      (maze.cells[i][j].col * maze.cell_size,
                                       maze.cells[i][j].row * maze.cell_size))
+
+    def draw_exit_cell(self, exit_cell):
+        pygame.draw.rect(self.window, color.red,
+                        (exit_cell.col * exit_cell.size + 2, exit_cell.row * exit_cell.size + 2,
+                        exit_cell.size - 2, exit_cell.size - 2))
 
     def draw_player(self, player):
         mid = player.size / 2
@@ -110,13 +115,13 @@ class Screen:
                 (player.position + mid_point).get_tuple(), 
                 vision_point.get_tuple())
 
-    def refresh(self, maze, player, coin, score, time_left):
+    def refresh(self, maze, player, score, time_left):
         self.window.fill(color.black)
         #self.draw_maze(maze)
         #self.draw_player(player)
-        self.draw_coin(coin)
         self.draw_scoreboard(score[0], score[1])
         self.draw_time(time_left)
+        self.draw_exit_cell(maze.exit_cell)
         self.draw_rays(player, maze)
         pygame.display.update()
 

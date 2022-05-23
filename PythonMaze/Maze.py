@@ -60,6 +60,7 @@ class Maze:
             for j in range(0, self.rows):
                 self.cells[i][j] = Cell(i, j, cell_size)
         self.walls_lines = []
+        self.exit_cell = self.cells[-1][-1]
 
     def is_valid(self, cell):
         if cell.col < 0 or cell.col >= self.columns:
@@ -67,7 +68,10 @@ class Maze:
         if cell.row < 0 or cell.row >= self.rows:
             return False
         if self.cells[cell.col][cell.row].visited:
-            return False
+            if random.randint(1, 10) <= 1:
+                return True
+            else:
+                return False
         return True
 
     def has_neighbours(self, cell):

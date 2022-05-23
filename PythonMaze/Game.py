@@ -14,9 +14,9 @@ class Game:
         self.fps = 60
         self.running = True
         self.clock = pygame.time.Clock()
-        self.difficulty = 0
+        self.action = 0
         self.scoreboard = Scoreboard()
-        self.menu = Menu(self.scoreboard.get_highest_score())
+        self.menu = Menu(self.scoreboard.get_best_score())
         pygame.init()
 
     def pressed_exit(self):
@@ -27,69 +27,53 @@ class Game:
     def quit(self):
         self.running = False
 
-    def choose_difficulty(self):
-        self.difficulty = 1 # Remove
-        return
-        while self.difficulty == 0 and self.running:
+    def wait_action(self):
+        while self.action == 0 and self.running:
             self.clock.tick(self.fps)
-            difficulty = self.screen.draw_menu(self.menu)
-            if difficulty:
-                self.difficulty = difficulty
+            action = self.screen.draw_menu(self.menu)
+            if action == 1:
+                self.action = action
+            elif action == -1:
+                self.quit()
             self.pressed_exit()
 
-    def set_difficulty(self):
-        if self.difficulty == 1:
-            return (500, 500, 100, 50)
-        elif self.difficulty == 2:
-            return (500, 500, 50, 30)
-        elif self.difficulty == 3:
-            return 500, 500, 35, 20
-        else:
-            exit()
+    def get_dimensions(self):
+        return 500, 500, 35, 20
 
-
-    def update_score(self, player, coin, score, high_score, coin_generator):
-        if player.picked_coin(coin):
-            coin = coin_generator.generate_coin()
-            multiplier = 2 + (self.difficulty == 2) * 3 + (self.difficulty == 3) * 10
-            score += 1 * multiplier
-            if score > high_score:
-                self.scoreboard.set_highest_score(score)
-                high_score = score
-            return coin, score, high_score
-        else:
-            return coin, score, high_score
+    def update_score(self, new_score):
+        best_score = self.scoreboard.get_best_score()
+        if best_score != -1:
+            if new_score < best_score:
+                self.scoreboard.set_best_score(new_score)
 
     def start(self):
-        width, height, cell_size, player_size = self.set_difficulty()
+        width, height, cell_size, player_size = self.get_dimensions()
         self.screen = Screen(width + 1, height + 50 + 1, color.black, "Maze Game")
         maze = Maze(width, height, cell_size)
         maze.generate()
-        coin_generator = CoinGenerator((maze.columns, maze.rows), cell_size)
-        coin = coin_generator.generate_coin()
         player = Player(Point(0, 0), player_size, color.green, 5, 50)
-        score = 0
-        highest_score = self.scoreboard.get_highest_score()
+        best_score = self.scoreboard.get_best_score()
         timer = Timer()
         timer.start()
-        n = 60
-        while self.running and timer.get_seconds() < n:
+        time_elapsed = 0
+        while self.running:
             self.clock.tick(self.fps)
-            coin, score, highest_score = self.update_score(player, coin, score, highest_score, coin_generator)
             self.pressed_exit()
             player.move(maze)
-            self.screen.refresh(maze, player, coin, (score, highest_score), n - timer.get_seconds())
+            time_elapsed = timer.get_seconds()
+            self.screen.refresh(maze, player, (time_elapsed, best_score), time_elapsed)
+        self.update_score(time_elapsed)
         self.screen.draw_game_over()
-        self.update_score(player, coin, score, highest_score, coin_generator)
         self.reset_game()
 
     def reset_game(self):
         self.screen = Screen(500 + 1, 320 + 1, color.black, "Maze Game")
         self.running = True
-        self.difficulty = 0
-        self.menu.set_highest_score(self.scoreboard.get_highest_score())
-        self.choose_difficulty()
-        self.start()
+        self.action = 0
+        self.menu.set_best_score(self.scoreboard.get_best_score())
+        self.wait_action()
+        if self.running and self.start_game == 1:
+            self.start()
 
 
 
