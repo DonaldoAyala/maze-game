@@ -49,7 +49,6 @@ class Player:
         player_center = Point(self.position.x + (self.size // 2), self.position.y + (self.size // 2))
         exit_center = exit_cell.get_center()
         distance = Point.distance(player_center, exit_center)
-        print(distance)
         return distance <= self.size // 2 + exit_cell.size // 2
 
     def move(self, maze):

@@ -14,7 +14,7 @@ class Scoreboard:
         else:
             with open("./files/best_score.txt", "w") as file:
                 file.write("-1")
-            return 0
+            return -1
 
     def set_best_score(self, new_score):
         with open("./files/best_score.txt", "w") as file:
