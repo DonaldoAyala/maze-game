@@ -46,6 +46,9 @@ class Game:
             if new_score < best_score:
                 self.scoreboard.set_best_score(new_score)
 
+    def player_reached_exit(self):
+        return 
+
     def start(self):
         width, height, cell_size, player_size = self.get_dimensions()
         self.screen = Screen(width + 1, height + 50 + 1, color.black, "Maze Game")
@@ -61,9 +64,11 @@ class Game:
             self.pressed_exit()
             player.move(maze)
             time_elapsed = timer.get_seconds()
+            if player.reached_exit(maze.exit_cell):
+                self.running = False
             self.screen.refresh(maze, player, (time_elapsed, best_score), time_elapsed)
         self.update_score(time_elapsed)
-        self.screen.draw_game_over()
+        self.screen.draw_end_of_game()
         self.reset_game()
 
     def reset_game(self):

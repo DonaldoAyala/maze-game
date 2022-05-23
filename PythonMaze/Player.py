@@ -2,6 +2,7 @@ from CoinGenerator import Coin
 import pygame
 import math
 from Ray import *
+from Point import *
 
 
 class Player:
@@ -44,10 +45,12 @@ class Player:
     def go_left(self):
         self.position.x -= self.speed
 
-    def picked_coin(self, coin):
-        player_center = (self.position.x + (self.size // 2), self.position.y + (self.size // 2))
-        distance = ((player_center[0] - coin.center[0]) ** 2 + (player_center[1] - coin.center[1]) ** 2)**(1/2)
-        return distance <= self.size // 2 + coin.radius
+    def reached_exit(self, exit_cell):
+        player_center = Point(self.position.x + (self.size // 2), self.position.y + (self.size // 2))
+        exit_center = exit_cell.get_center()
+        distance = Point.distance(player_center, exit_center)
+        print(distance)
+        return distance <= self.size // 2 + exit_cell.size // 2
 
     def move(self, maze):
         current_cell = maze.cells[math.floor(self.position.x / maze.cell_size)][math.floor(self.position.y / maze.cell_size)]

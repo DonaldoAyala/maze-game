@@ -94,8 +94,8 @@ class Screen:
     def draw_time(self, time):
         self.print_text("Time: " + str(time), (350, 505), 30, color.gray)
 
-    def draw_game_over(self):
-        self.print_text("Game Over!", (100, 200), 60, color.red)
+    def draw_end_of_game(self):
+        self.print_text("Finish!", (100, 200), 60, color.red)
         pygame.display.update()
         time.sleep(2)
 

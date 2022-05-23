@@ -47,6 +47,9 @@ class Cell:
             end = Point(self.col * self.size, (self.row + 1) * self.size)
             walls_lines.append(Wall(start, end))
         return walls_lines
+    
+    def get_center(self):
+        return Point(self.row * self.size + self.size, self.col * self.size + self.size)
 
 class Maze:
     moves = [[0, -1], [1, 0], [0, 1], [-1, 0]]
