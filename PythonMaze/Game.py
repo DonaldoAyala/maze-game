@@ -58,6 +58,7 @@ class Game:
         maze.generate()
         player = Player(Point(0, 0), player_size, color.green, 5, 50)
         best_score = self.scoreboard.get_best_score()
+        best_score = best_score if best_score != -1 else best_score
         timer = Timer()
         timer.start()
         time_elapsed = 0
@@ -70,7 +71,7 @@ class Game:
             if player.reached_exit(maze.exit_cell):
                 self.running = False
                 reached_exit = True
-            self.screen.refresh(maze, player, (time_elapsed, best_score), time_elapsed)
+            self.screen.refresh(maze, player, best_score, time_elapsed)
         if reached_exit:
             self.update_score(time_elapsed)
             self.screen.draw_end_of_game()

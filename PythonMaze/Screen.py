@@ -88,11 +88,11 @@ class Screen:
         mid = player.size / 2
         pygame.draw.circle(self.window, player.color, (player.position + Point(mid, mid)).get_tuple(), player.size / 2)
 
-    def draw_scoreboard(self, score, highest_score):
-        self.print_text("Score: " + str(score) + "   " + "Record: " + str(highest_score), (10, 505), 30, color.gray)
+    def draw_scoreboard(self, best_score):
+        self.print_text("Best Time: " + str(best_score), (300, 505), 30, color.gray)
 
     def draw_time(self, time):
-        self.print_text("Time: " + str(time), (350, 505), 30, color.gray)
+        self.print_text("Time: " + str(time), (10, 505), 30, color.gray)
 
     def draw_end_of_game(self):
         self.print_text("Finish!", (100, 200), 60, color.red)
@@ -115,12 +115,12 @@ class Screen:
                 (player.position + mid_point).get_tuple(), 
                 vision_point.get_tuple())
 
-    def refresh(self, maze, player, score, time_left):
+    def refresh(self, maze, player, score, time):
         self.window.fill(color.black)
         #self.draw_maze(maze)
         #self.draw_player(player)
-        self.draw_scoreboard(score[0], score[1])
-        self.draw_time(time_left)
+        self.draw_scoreboard(score)
+        self.draw_time(time)
         self.draw_exit_cell(maze.exit_cell)
         self.draw_rays(player, maze)
         pygame.display.update()
